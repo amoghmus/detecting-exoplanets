@@ -1,0 +1,37 @@
+#smoothness index function:
+def display_value_differences(lst):
+    differences = []
+    mean_squared_error = []
+    for i in range(len(lst)-1):
+        differences.append((lst[i+1]-lst[i]))
+    for item in differences:
+        mean_squared_error.append(item**2)
+    average = (sum(mean_squared_error))/len(differences)
+    return average
+
+#phase curve testing:
+def check_best_curve(guess, lst2):
+    starting_point = guess
+    ending_guess = guess + 0.16
+    best = 100
+    while (starting_point < ending_guess):
+        lst1 = phase_dates(starting_point)
+        #lst1, lst2 = zip(*sorted(zip(lst1, lst2)))
+        print("Period: " + str(starting_point))
+        print("Smoothness Index: " + str(display_value_differences(lst1)))
+        x = display_value_differences(lst1)
+        
+        if (x < best):
+            plt.plot(lst1, lst2, 'bo')
+            print("")
+            plt.xlabel("Days")
+            plt.ylabel("Relative Flux")
+            plt.show()
+            plt.pause(0.1)
+            plt.cla()
+            best = x
+        starting_point = starting_point + 0.001
+
+
+iteration_fluxes = rel_flux[1:]
+check_best_curve(1.8, iteration_fluxes)
